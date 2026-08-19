@@ -4,7 +4,8 @@
 
 | Date | Sujet | Responsable | Niveau atteint | Prochaine étape |
 | --- | --- | --- | --- | --- |
-| 2026-08-19 | Lot 3 — publication de recette GitHub Pages | Codex | Bloqué après push | Décider comment publier une recette privée : plan GitHub compatible, recette publique `noindex`, ou hébergement alternatif |
+| 2026-08-19 | Intégration des contenus réels du document client | Codex | Testé | Faire valider e-mail, photos, logo, capital social, partenaires et témoignages |
+| 2026-08-19 | Images distinctes des 13 réalisations réelles | Codex | Testé | Remplacer les images libres à réception des photos client |
 
 ## À faire
 
@@ -130,3 +131,37 @@
   repository.` Vérifications locales OK : domaine unique, liens internes, 15 pages avec
   `noindex`, `robots.txt` en `Disallow: /`. Vérifications en ligne non passantes :
   `https://gaslandie.github.io/eccotaepf/` renvoie `Site not found`.
+- 2026-08-19 — **Réception du document « ECCOTA-EPF au PARTENARIAT »** (6 pages, signé du
+  gérant). Extraction dans `docs/cadrage/DONNEES_CLIENT.md` : identité, RCCM, NIF, CNSS,
+  coordonnées, dirigeant, vision, valeurs en acronyme, et **13 marchés exécutés** datés et
+  localisés, dont 12 avec attestation de bonne fin. Huit questions ouvertes sur quinze sont
+  résolues. Le seul manque majeur restant est photographique.
+  Interdiction posée : les coordonnées bancaires du document ne sont jamais publiées.
+- 2026-08-19 — **Contenus réels intégrés par Codex, niveau testé.** `a-propos.html` reçoit
+  l'identité, la direction, la vision et les valeurs ECCOTA-EPF ; l'accueil affiche les vrais
+  chiffres clés, la conformité RCCM/NIF/CNSS et les huit préfectures ; les coordonnées sont
+  remplacées ; les 6 fiches de démonstration sont supprimées et remplacées par 13 marchés
+  réels avec slugs définitifs, période, lieu, domaine, pièce justificative et chiffre clé
+  quand il existe. Restent provisoires : photos libres, logo, e-mail à confirmer,
+  autorisations partenaires, capital social et témoignages.
+- 2026-08-19 — **Correctif images du lot 2B.** Treize jeux WebP Pexels distincts ont été
+  ajoutés pour les treize marchés réels, avec une galerie réduite à l'image propre de chaque
+  fiche afin d'éviter les doublons génériques. Les sources restent provisoires et seront
+  remplacées par les photos ECCOTA-EPF.
+- 2026-08-19 — **Lot 2C terminé par Codex, niveau testé.** Services, Réalisations,
+  Partenaires et Contact ont chacun un bandeau libre distinct ; les pages légales et la 404
+  restent sans image. Le système de mouvement natif couvre apparitions, en-tête, hero,
+  compteurs, cartes, filtres et partenaires, avec contenu complet sans JavaScript et arrêt
+  total sous `prefers-reduced-motion`. Contrôles réels : 22 pages à 320/768/1024/1440 px,
+  30 captures, une empreinte d'en-tête et de pied, CLS 0. Lighthouse mobile gzip
+  (performance/accessibilité/bonnes pratiques/SEO) : accueil 97/100/100/69, Services
+  90/96/100/69, réalisation 96/96/100/69. Le score SEO reste volontairement limité par le
+  `noindex` obligatoire de la maquette jusqu'au lot 8.
+- 2026-08-19 — **Lot 2D terminé par Codex, niveau testé.** Hero d'accueil rapproché de la
+  référence Cougnaud, Figtree et Karla auto-hébergées, faits sortis du hero, rythme vertical
+  rétabli, masque du bandeau partenaires, glyphe WhatsApp officiel et sept icônes métier
+  distinctes. La carte utilise le contour Natural Earth de la Guinée simplifié à 255 points,
+  huit positions vérifiées et aucun trait de liaison. Contrôles réels : 22 pages à
+  320/768/1024/1440 px sans débordement, parcours sans JavaScript et mouvement réduit OK,
+  CLS 0. Lighthouse mobile gzip accueil : 98/100/100/69 ; le SEO reste limité par le
+  `noindex` obligatoire de la maquette.

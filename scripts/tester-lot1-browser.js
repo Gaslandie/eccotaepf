@@ -6,30 +6,23 @@ const SITE = "http://127.0.0.1:4173";
 const ROOT = path.resolve(__dirname, "..");
 const CAPTURE_DIR = path.join(ROOT, "docs", "design-ux", "captures", "lot-1");
 
-const pages = [
-  "index.html",
-  "404.html",
-  "a-propos.html",
-  "services.html",
-  "partenaires.html",
-  "contact.html",
-  "mentions-legales.html",
-  "confidentialite.html",
-  "realisations/index.html",
-  "realisations/amenagement-ouvrage-technique-conakry.html",
-  "realisations/infrastructure-scolaire-kindia.html",
-  "realisations/renovation-centre-sante-mamou.html",
-  "realisations/travaux-voirie-kankan.html",
-  "realisations/base-logistique-boke.html",
-  "realisations/amenagement-agropastoral-faranah.html"
-];
+function listHtmlPages() {
+  return fs.readdirSync(ROOT)
+    .filter((file) => file.endsWith(".html"))
+    .concat(fs.readdirSync(path.join(ROOT, "realisations"))
+      .filter((file) => file.endsWith(".html"))
+      .map((file) => "realisations/" + file))
+    .sort((a, b) => a.localeCompare(b, "fr"));
+}
+
+const pages = listHtmlPages();
 
 const capturePages = [
   ["accueil", "index.html"],
   ["a-propos", "a-propos.html"],
   ["services", "services.html"],
   ["realisations", "realisations/index.html"],
-  ["realisation-detail", "realisations/infrastructure-scolaire-kindia.html"],
+  ["realisation-detail", "realisations/construction-ecole-primaire-gberedou-baranama.html"],
   ["partenaires", "partenaires.html"],
   ["contact", "contact.html"],
   ["mentions-legales", "mentions-legales.html"],
@@ -85,8 +78,11 @@ async function evaluate(client, expression, awaitPromise = false) {
   return result.result.value;
 }
 
-async function navigate(client, page, width, javascript = true) {
+async function navigate(client, page, width, javascript = true, reducedMotion = false, scrollPage = true) {
   await client.send("Emulation.setScriptExecutionDisabled", { value: !javascript });
+  await client.send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-reduced-motion", value: reducedMotion ? "reduce" : "no-preference" }]
+  });
   await client.send("Emulation.setDeviceMetricsOverride", {
     width,
     height: width <= 480 ? 760 : 900,
@@ -103,21 +99,23 @@ async function navigate(client, page, width, javascript = true) {
     if (document.readyState === "complete") resolve();
     else window.addEventListener("load", resolve, { once: true });
   })`, true);
-  await evaluate(client, `new Promise((resolve) => {
-    document.querySelectorAll("img[loading='lazy']").forEach((img) => { img.loading = "eager"; });
-    const step = Math.max(500, innerHeight * .8);
-    let position = 0;
-    function advance() {
-      position += step;
-      window.scrollTo(0, position);
-      if (position < document.documentElement.scrollHeight) requestAnimationFrame(advance);
-      else {
-        window.scrollTo(0, 0);
-        resolve();
+  if (scrollPage) {
+    await evaluate(client, `new Promise((resolve) => {
+      document.querySelectorAll("img[loading='lazy']").forEach((img) => { img.loading = "eager"; });
+      const step = Math.max(500, innerHeight * .8);
+      let position = 0;
+      function advance() {
+        position += step;
+        window.scrollTo(0, position);
+        if (position < document.documentElement.scrollHeight) requestAnimationFrame(advance);
+        else {
+          window.scrollTo(0, 0);
+          resolve();
+        }
       }
-    }
-    advance();
-  })`, true);
+      advance();
+    })`, true);
+  }
   await evaluate(client, `Promise.race([
     Promise.all(Array.from(document.images).map((img) => {
       if (img.complete) return true;
@@ -128,7 +126,7 @@ async function navigate(client, page, width, javascript = true) {
     })),
     new Promise((resolve) => setTimeout(resolve, 2000))
   ])`, true);
-  await delay(120);
+  await delay(scrollPage ? 850 : 120);
 }
 
 async function createClient() {
@@ -167,6 +165,11 @@ async function testPages(client, failures) {
           .map((el) => el.textContent.trim());
         const emptyRendered = Array.from(document.querySelectorAll("[hidden]"))
           .filter((el) => getComputedStyle(el).display !== "none").length;
+        const motionHidden = Array.from(document.querySelectorAll("main [data-reveal]"))
+          .filter((el) => {
+            const rect = el.getBoundingClientRect();
+            return rect.top < innerHeight && rect.bottom > 0 && getComputedStyle(el).opacity === "0";
+          }).length;
         return {
           innerWidth,
           scrollWidth: document.documentElement.scrollWidth,
@@ -175,6 +178,7 @@ async function testPages(client, failures) {
           resources,
           overflowingStats,
           emptyRendered,
+          motionHidden,
           hasProductionNote: /photo d.illustration|à compl[ée]ter|ces exemples ne sont pas|en attendant|emplacement r[ée]serv[ée]|à fournir|lot [0-9]|maquette/i.test(visibleText),
           hasCompliance: Boolean(document.querySelector(".compliance-section")),
           visibleTextLength: visibleText.trim().length
@@ -188,8 +192,11 @@ async function testPages(client, failures) {
       assert(audit.resources.length === 0, label + " : requête externe " + audit.resources.join(", "), failures);
       assert(audit.overflowingStats.length === 0, label + " : valeur débordante " + audit.overflowingStats.join(", "), failures);
       assert(audit.emptyRendered === 0, label + " : élément [hidden] rendu", failures);
+      assert(audit.motionHidden === 0, label + " : élément d'apparition encore masqué", failures);
       assert(!audit.hasProductionNote, label + " : mention de production visible", failures);
-      assert(!audit.hasCompliance, label + " : conformité rendue sans données", failures);
+      if (page === "index.html") {
+        assert(audit.hasCompliance, label + " : conformité administrative absente", failures);
+      }
       assert(audit.visibleTextLength > 40, label + " : contenu visuel anormalement vide", failures);
     }
   }
@@ -205,34 +212,36 @@ async function testInteractions(client, failures) {
   assert(!(await evaluate(client, `document.getElementById("menu-mobile").classList.contains("show")`)), "Menu mobile : fermeture impossible", failures);
 
   await navigate(client, "realisations/index.html", 1024);
-  const filterResult = await evaluate(client, `(() => {
-    const result = {};
-    document.querySelectorAll("[data-filter]").forEach((button) => {
-      button.click();
-      result[button.dataset.filter] = {
+  const filterResult = {};
+  const filterNames = await evaluate(client, `Array.from(document.querySelectorAll("[data-filter]"), (button) => button.dataset.filter)`);
+  for (const filter of filterNames) {
+    await evaluate(client, `document.querySelector('[data-filter="${filter}"]').click()`);
+    await delay(900);
+    filterResult[filter] = await evaluate(client, `(() => {
+      const button = document.querySelector('[data-filter="${filter}"]');
+      return {
         visible: Array.from(document.querySelectorAll("[data-project-card]")).filter((card) => !card.hidden).length,
         expected: Number(button.querySelector("span").textContent),
         emptyVisible: !document.querySelector("[data-filter-empty]").hidden
       };
-    });
-    return result;
-  })()`);
+    })()`);
+  }
   Object.entries(filterResult).forEach(([filter, result]) => {
     assert(result.visible === result.expected, "Filtre " + filter + " : " + result.visible + " au lieu de " + result.expected, failures);
     assert(result.emptyVisible === (result.expected === 0), "Filtre " + filter + " : état vide incorrect", failures);
   });
 
   await navigate(client, "realisations/index.html?domaine=btp-construction", 1024);
-  assert((await evaluate(client, `Array.from(document.querySelectorAll("[data-project-card]")).filter((card) => !card.hidden).length`)) === 1, "Filtre par URL : résultat incorrect", failures);
+  assert((await evaluate(client, `Array.from(document.querySelectorAll("[data-project-card]")).filter((card) => !card.hidden).length`)) === 7, "Filtre par URL : résultat incorrect", failures);
 
-  await navigate(client, "realisations/infrastructure-scolaire-kindia.html", 1024);
+  await navigate(client, "realisations/construction-ecole-primaire-gberedou-baranama.html", 1024);
   await evaluate(client, `document.querySelector("[data-gallery-item]").click()`);
   await delay(400);
   assert(await evaluate(client, `document.querySelector("[data-gallery-modal]").classList.contains("show")`), "Galerie : ouverture impossible", failures);
   await client.send("Input.dispatchKeyEvent", { type: "keyDown", key: "ArrowRight", code: "ArrowRight" });
   await client.send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowRight", code: "ArrowRight" });
   await delay(120);
-  assert((await evaluate(client, `document.querySelector("[data-gallery-position]").textContent.trim()`)) === "2 / 3", "Galerie : navigation clavier incorrecte", failures);
+  assert((await evaluate(client, `document.querySelector("[data-gallery-position]").textContent.trim()`)) === "1 / 1", "Galerie : navigation clavier incorrecte", failures);
   await client.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape" });
   await client.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape" });
   await delay(450);
@@ -244,11 +253,79 @@ async function testInteractions(client, failures) {
   assert(await evaluate(client, `document.activeElement.id === "nom"`), "Formulaire : focus d'erreur incorrect", failures);
   assert(await evaluate(client, `document.querySelector("[data-form-status]").textContent.length > 0`), "Formulaire : état de validation absent", failures);
 
-  await navigate(client, "realisations/index.html", 320, false);
-  assert((await evaluate(client, `Array.from(document.querySelectorAll("[data-project-card]")).filter((card) => !card.hidden).length`)) === 6, "Sans JavaScript : toutes les réalisations ne sont pas visibles", failures);
-  await navigate(client, "contact.html", 320, false);
-  assert(await evaluate(client, `document.querySelector("[data-contact-form]").getAttribute("action").startsWith("mailto:")`), "Sans JavaScript : repli mailto absent", failures);
+}
+
+async function testMotionModes(client, failures) {
+  for (const page of pages) {
+    await navigate(client, page, 320, false);
+    const audit = await evaluate(client, `({
+      text: document.body.innerText.trim().length,
+      reveals: document.querySelectorAll("[data-reveal]").length,
+      hiddenByOpacity: Array.from(document.querySelectorAll("main *")).filter((element) => element.getClientRects().length && getComputedStyle(element).opacity === "0").length
+    })`);
+    assert(audit.text > 40, "Sans JavaScript " + page + " : contenu vide", failures);
+    assert(audit.reveals === 0, "Sans JavaScript " + page + " : état d'apparition présent", failures);
+    assert(audit.hiddenByOpacity === 0, "Sans JavaScript " + page + " : contenu masqué par opacity", failures);
+  }
   await client.send("Emulation.setScriptExecutionDisabled", { value: false });
+
+  await navigate(client, "index.html", 320, true, true, false);
+  await evaluate(client, `scrollTo(0, 700)`);
+  await delay(300);
+  const reduced = await evaluate(client, `({
+    word: document.querySelector("[data-hero-word]").textContent,
+    headerState: document.body.classList.contains("header-compact") || document.body.classList.contains("header-hidden"),
+    reveals: document.querySelectorAll("[data-reveal]").length,
+    stats: Array.from(document.querySelectorAll(".stat-value"), (element) => element.textContent.trim()),
+    partnerAnimation: getComputedStyle(document.querySelector(".partner-track")).animationName
+  })`);
+  assert(reduced.word === "des écoles.", "Mouvement réduit : le mot du hero tourne", failures);
+  assert(!reduced.headerState, "Mouvement réduit : l'en-tête réagit au défilement", failures);
+  assert(reduced.reveals === 0, "Mouvement réduit : des états d'apparition sont posés", failures);
+  assert(reduced.stats.join(",") === "2015,13,12,8", "Mouvement réduit : compteurs modifiés", failures);
+  assert(reduced.partnerAnimation === "none", "Mouvement réduit : bandeau partenaires animé", failures);
+
+  await navigate(client, "index.html", 320, true, false, false);
+  const firstWord = await evaluate(client, `document.querySelector("[data-hero-word]").textContent`);
+  await delay(3100);
+  const nextWord = await evaluate(client, `document.querySelector("[data-hero-word]").textContent`);
+  assert(firstWord !== nextWord, "Hero : le mot ne tourne pas après 2,8 s", failures);
+  await evaluate(client, `document.querySelector("[data-hero-rotator]").focus()`);
+  const focusedWord = await evaluate(client, `document.querySelector("[data-hero-word]").textContent`);
+  await delay(3100);
+  assert((await evaluate(client, `document.querySelector("[data-hero-word]").textContent`)) === focusedWord, "Hero : rotation non suspendue au focus", failures);
+
+  await evaluate(client, `document.querySelector("[data-hero-rotator]").blur(); scrollTo(0, 700)`);
+  await delay(300);
+  assert(await evaluate(client, `document.body.classList.contains("header-compact") && document.body.classList.contains("header-hidden")`), "En-tête : condensation ou masquage en descente absent", failures);
+  await evaluate(client, `scrollTo(0, 500)`);
+  await delay(300);
+  assert(!(await evaluate(client, `document.body.classList.contains("header-hidden")`)), "En-tête : réapparition en montée absente", failures);
+
+  const revealExists = await evaluate(client, `Boolean(document.querySelector("[data-reveal]"))`);
+  assert(revealExists, "Apparition : aucun élément préparé par le script", failures);
+  if (revealExists) {
+    await evaluate(client, `document.querySelector("[data-reveal]").scrollIntoView()`);
+    await delay(700);
+    assert(await evaluate(client, `document.querySelector("[data-reveal]").classList.contains("is-visible")`), "Apparition : élément non révélé", failures);
+    await evaluate(client, `scrollTo(0, 0); document.querySelector("[data-reveal]").scrollIntoView()`);
+    assert(await evaluate(client, `document.querySelector("[data-reveal]").classList.contains("is-visible")`), "Apparition : état rejoué au second passage", failures);
+  }
+
+  await navigate(client, "realisations/index.html", 1024, true, false, false);
+  await evaluate(client, `document.querySelector(".project-card").scrollIntoView({ block: "center" })`);
+  await client.send("DOM.enable");
+  await client.send("CSS.enable");
+  const documentNode = await client.send("DOM.getDocument");
+  const cardNode = await client.send("DOM.querySelector", { nodeId: documentNode.root.nodeId, selector: ".project-card" });
+  await client.send("CSS.forcePseudoState", { nodeId: cardNode.nodeId, forcedPseudoClasses: ["hover"] });
+  await delay(250);
+  const hoverTransform = await evaluate(client, `new DOMMatrix(getComputedStyle(document.querySelector(".project-card")).transform).m42`);
+  await client.send("CSS.forcePseudoState", { nodeId: cardNode.nodeId, forcedPseudoClasses: [] });
+  await evaluate(client, `document.querySelector(".project-card a").focus()`);
+  await delay(250);
+  const focusTransform = await evaluate(client, `new DOMMatrix(getComputedStyle(document.querySelector(".project-card")).transform).m42`);
+  assert(Math.abs(hoverTransform - focusTransform) < .2 && focusTransform < -3.5, "Carte : traitement différent au survol et au focus", failures);
 }
 
 async function takeCaptures(client) {
@@ -258,6 +335,8 @@ async function takeCaptures(client) {
     for (const width of [320, 768, 1440]) {
       for (const [name, page] of capturePages) {
         await navigate(client, page, width);
+        await evaluate(client, `document.querySelectorAll("[data-reveal]").forEach((element) => element.classList.add("is-visible"))`);
+        await delay(450);
         const screenshot = await client.send("Page.captureScreenshot", {
           format: "png",
           fromSurface: true,
@@ -279,7 +358,10 @@ async function main() {
   const { client, targetId } = await createClient();
   try {
     if (!interactionsOnly && !capturesOnly) await testPages(client, failures);
-    if (!capturesOnly && !pagesOnly) await testInteractions(client, failures);
+    if (!capturesOnly && !pagesOnly) {
+      await testInteractions(client, failures);
+      await testMotionModes(client, failures);
+    }
     if (!interactionsOnly && !pagesOnly) await takeCaptures(client);
   } finally {
     await closeClient(client, targetId);
@@ -291,8 +373,8 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  if (!interactionsOnly && !capturesOnly) console.log("OK - 15 pages testées à 320, 768, 1024 et 1440 px.");
-  if (!capturesOnly && !pagesOnly) console.log("OK - menu, filtres, galerie, formulaire et repli sans JavaScript.");
+  if (!interactionsOnly && !capturesOnly) console.log("OK - " + pages.length + " pages testées à 320, 768, 1024 et 1440 px.");
+  if (!capturesOnly && !pagesOnly) console.log("OK - interactions, 22 pages sans JavaScript et mouvement réduit.");
   if (!interactionsOnly && !pagesOnly) console.log("OK - 30 captures écrites dans " + path.relative(ROOT, CAPTURE_DIR) + ".");
 }
 

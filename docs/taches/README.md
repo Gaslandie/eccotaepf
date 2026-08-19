@@ -12,7 +12,9 @@ Lot 0   Socle Bootstrap et thème + page d'accueil
   └─ Lot 0B  Accents, réécriture des textes, apports P0 du benchmark
        └─ Lot 1   Les 8 pages publiques restantes
             └─ Lot 2   Images et référencement            (sur contenus provisoires)
-                 └─ Lot 3   Publication de la maquette et VALIDATION CLIENT
+                 └─ Lot 2C  Interface et animations       (inspiration Cougnaud)
+                      └─ Lot 2D  Hero calé sur Cougnaud et correction de la carte
+                           └─ Lot 3   Publication de la maquette et VALIDATION CLIENT
 
                     ═══ FEU VERT CLIENT ═══  jalon bloquant
 

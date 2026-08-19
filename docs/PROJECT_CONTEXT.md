@@ -44,6 +44,9 @@
 | 2026-08-19 | Une page de détail par réalisation | C'est le lien envoyable dans un dossier d'appel d'offres, et le principal gain de référencement | Slug figé après création |
 | 2026-08-19 | Table `utilisateurs` dès le départ, un seul compte créé | Ajouter un compte plus tard sans migration | Pas de gestion de rôles |
 | 2026-08-19 | `services` sert aussi de taxonomie aux réalisations | Un seul référentiel, filtre par domaine sans table supplémentaire | `realisations.service_id` |
+| 2026-08-19 | **Contenus réels intégrés à la maquette** à réception du document de partenariat : identité, conformité, coordonnées, valeurs, 13 marchés exécutés | Une maquette nourrie de vraies références se valide sur le fond, pas seulement sur la forme. Et le client se reconnaît | `cadrage/DONNEES_CLIENT.md` devient la source unique ; lot 2B partiel déclenché avant le lot 3 |
+| 2026-08-19 | Une image libre distincte par marché réel en attendant les photos ECCOTA-EPF | Les 13 fiches doivent démontrer des chantiers de nature différente, même au stade maquette | Images Pexels sourcées dans `SOURCES_IMAGES.md`, toutes à remplacer par les photos client |
+| 2026-08-19 | **Ne jamais publier les coordonnées bancaires** figurant dans le document client | Un numéro de compte affiché est une porte ouverte à la fraude au virement | Interdiction écrite dans `DONNEES_CLIENT.md` section 1 |
 | 2026-08-19 | **Ce qui est construit est une maquette de validation.** Le lot 3 est un jalon bloquant : contenus réels, domaine, hébergement et phase 2 n'arrivent qu'après le feu vert | Ne pas engager de contenu réel ni d'achat sur un design qui peut encore être refondu | Lot 2B déplacé après le lot 3 ; question n° 1 repoussée après validation |
 | 2026-08-19 | Benchmark Cougnaud et DET intégré : contact direct, métadonnées de cartes, zone d'intervention, conformité administrative, témoignages | Aider un donneur d'ordre à se convaincre qu'ECCOTA-EPF peut exécuter le marché | Voir `design-ux/BENCHMARK_COUGNAUD_DET.md` ; 4 champs ajoutés à `realisations` |
 | 2026-08-19 | Le contenu publié est accentué ; seuls slugs, fichiers et identifiants restent sans accent | La convention sans accent du template vise les documents internes, pas le texte vu par le visiteur | Lot 0B |
@@ -54,6 +57,10 @@
 | 2026-08-19 | Lot 1 : six slugs de réalisation figés et pages statiques générées depuis une source de données locale | Aligner les fiches sur le futur modèle PHP et garantir la répétabilité des blocs partagés | `scripts/generer-pages-lot1.js` produit les pages publiques et normalise les chemins des pages imbriquées |
 | 2026-08-19 | Lot 2 : métadonnées SEO provisoires sur l'URL GitHub Pages de recette | Le domaine définitif n'est pas encore arrêté et les contenus réels arrivent au lot 2B | Canonical, Open Graph, Twitter Card, JSON-LD, `robots.txt` et `sitemap.xml` devront être alignés au domaine final avant le lot 8 |
 | 2026-08-19 | Publication de recette bloquée si le dépôt GitHub reste privé avec le plan actuel | GitHub refuse l'activation de Pages sur ce dépôt privé : `Your current plan does not support GitHub Pages for this repository.` | Décision nécessaire avant de clore le lot 3 : plan GitHub compatible, recette temporairement publique en `noindex`, ou hébergement alternatif |
+| 2026-08-19 | Lot 2C : vocabulaire de mouvement natif, progressif et désactivable | Donner du rythme à la maquette sans bibliothèque, sans dépendance au JavaScript pour lire le contenu et sans dégrader le CLS | `IntersectionObserver`, états sur `<body>`, rotation accessible du hero, compteurs, filtres et bandeau partenaires ; `prefers-reduced-motion` fige tout |
+| 2026-08-19 | Un bandeau métier distinct sur Services, Réalisations, Partenaires et Contact ; aucun visuel sur les pages légales et la 404 | Éviter la répétition du hero d'accueil pendant la navigation et réserver l'image aux pages où elle porte du sens | Douze WebP ajoutés et sourcés ; accueil et À propos inchangés |
+| 2026-08-19 | Lot 2D : Figtree pour les titres et Karla pour le corps, auto-hébergées sous SIL OFL 1.1 | Ce sont les familles réellement calculées sur Cougnaud ; la reprise exacte conserve hauteur d'x et formes des `a`, `g` et `t` sans approximation | Archivo et Source Sans 3 ne sont plus référencées dans le rendu ; WOFF2 et licences locales dans `assets/fonts/` |
+| 2026-08-19 | Le contour de la Guinée provient de Natural Earth 1:10m, simplifié à 255 points, sans liaison entre les préfectures | Une carte schématique dessinée à la main nuisait à la crédibilité du site | Contour dans `assets/img/cartes/`, huit positions géographiques vérifiées et source domaine public documentée |
 
 ## Non-objectifs
 
@@ -70,15 +77,18 @@
 | --- | --- | --- | --- |
 | 1 | Nom de domaine | **Hors sujet jusqu'au feu vert.** Ne bloque rien : la maquette vit sur GitHub Pages. Le sujet s'ouvre après validation, pas avant | Après le lot 3 |
 | 2 | Hébergeur mutualisé retenu | Lot 4 et suivants. Plus bloquant pour la recette : GitHub Pages la couvre | Début de phase 2 |
-| 3 | Logo officiel : existe-t-il en vectoriel ou en haute définition ? | La palette du lot 0. Contourné par un logotype provisoire | Avant le lot 2 |
-| 4 | Photos de chantiers disponibles, et combien par réalisation ? | Crédibilité du site. Contourné par des images libres | Avant le lot 2 |
-| 5 | Liste des réalisations à publier, avec localisation et période | Lot 2 | Avant le lot 2 |
-| 6 | Partenaires : accord écrit pour l'affichage des logos ? | Lot 2 | Avant le lot 2 |
-| 7 | Adresse e-mail de réception des messages de contact | Lot 6 | Avant le lot 6 |
-| 8 | Éléments administratifs : RCCM, NIF, attestations fiscales et sociales, agréments | Lot 0B et lot 2. **Premier filtre d'un marché public guinéen**, gros gain de crédibilité | Avant le lot 2 |
-| 10 | Quatre chiffres vérifiables : années, marchés exécutés, régions couvertes, effectif | Section chiffres clés, aujourd'hui vide à dessein | Avant le lot 2 |
-| 11 | Régions et villes réellement couvertes par ECCOTA-EPF | Section zone d'intervention | Avant le lot 2 |
-| 12 | Une citation d'un maître d'ouvrage sur un chantier livré | Enrichit les réalisations phares, facultatif | Avant le lot 2 |
+| 3 | Logo officiel en vectoriel ou haute définition | Un logotype provisoire tient la place. Le logo du PDF est inexploitable | Avant le lot 3 |
+| 4 | **Photos de chantier** | Le seul manque majeur restant. Contourné par des images libres | Avant le lot 3 si possible |
+| 5 | ~~Liste des réalisations~~ | **Résolue** — 13 marchés dans `cadrage/DONNEES_CLIENT.md` | 2026-08-19 |
+| 6 | Autorisations écrites pour citer les donneurs d'ordre et afficher leurs logos | Page partenaires | Avant le lot 3 |
+| 7 | Adresse e-mail : `eccota-epf@gmail.com` ou `eccota.epf@gmail.com` ? Les deux figurent dans le même document | Contact. Publier la mauvaise fait perdre des demandes sans que personne ne le sache | **Avant le lot 3** |
+| 8 | ~~Éléments administratifs~~ | **Résolue** — RCCM, NIF, CNSS connus. Section conformité publiable | 2026-08-19 |
+| 10 | ~~Chiffres vérifiables~~ | **Résolue** — 2015, 13 marchés, 12 attestations, 8 préfectures | 2026-08-19 |
+| 11 | ~~Zone d'intervention~~ | **Résolue** — 8 préfectures documentées | 2026-08-19 |
+| 12 | Une citation d'un maître d'ouvrage | Enrichit les réalisations phares, facultatif | Quand possible |
+| 13 | Capital social : « 10 000 0000 » dans le document, 9 chiffres | Mentions légales. Ne pas publier un chiffre ambigu | Avant le lot 3 |
+| 14 | Palette : conserver l'ardoise et l'ocre, ou s'aligner sur le vert et l'orange de l'identité existante ? | Direction visuelle. Décision du client | Avant le lot 3 |
+| 15 | Accord pour publier la photo du dirigeant | Page à propos | Avant le lot 3 |
 | 9 | Le client a-t-il compris que l'administration arrive en phase 2 ? | Rien techniquement, tout commercialement | Au lot 3, à l'envoi du lien de recette |
 
 ## Risques

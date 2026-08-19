@@ -37,6 +37,11 @@ Le nom du dépôt est `eccotaepf` : GitHub Pages servira donc le site depuis le 
 Bootstrap **5.3.8**, copié dans `assets/vendor/bootstrap/`, jamais appelé depuis un CDN.
 Version exacte : `5.3.8`, distribution officielle `bootstrap-5.3.8-dist.zip`.
 
+Les polices **Figtree** (titres, graisses 600 et 700) et **Karla** (corps, graisses 400 à
+700) sont auto-hébergées au format WOFF2 dans `assets/fonts/`. Elles sont distribuées sous
+licence SIL Open Font License 1.1, dont une copie accompagne chaque famille. Sources :
+https://fonts.google.com/specimen/Figtree et https://fonts.google.com/specimen/Karla.
+
 Aucun gestionnaire de paquets, aucune étape de build, aucune bibliothèque supplémentaire.
 Node n'est utilisé que pour deux scripts de vérification, sans dépendance.
 
@@ -83,6 +88,8 @@ node scripts/generer-sitemap.js
 | 0 | Socle Bootstrap, thème, accueil | Testé |
 | 1 | Les 8 pages publiques restantes | **Fait** — correctif en cours |
 | 2 | Images et référencement | **Fait** — testé |
+| 2C | Interface et animations | **Fait** — testé |
+| 2D | Hero calé sur Cougnaud, correction de la carte | **Fait** — testé |
 | 3 | Publication de la maquette et validation client | À faire — **jalon bloquant** |
 | 2B | Intégration des contenus réels | Bloqué — après le feu vert |
 | 4 | Bascule PHP et base de données | À faire |
