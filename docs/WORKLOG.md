@@ -4,7 +4,7 @@
 
 | Date | Sujet | Responsable | Niveau atteint | Prochaine étape |
 | --- | --- | --- | --- | --- |
-| 2026-08-19 | Lot 2 — images et référencement provisoires | Codex | Testé | Lot 2B — contenus réels à réception des éléments client |
+| 2026-08-19 | Lot 3 — publication de recette GitHub Pages | Codex | Bloqué après push | Décider comment publier une recette privée : plan GitHub compatible, recette publique `noindex`, ou hébergement alternatif |
 
 ## À faire
 
@@ -122,3 +122,11 @@
   domaine de test → zéro reste de `github.io` ; retour à l'URL de recette → 17 fichiers
   identiques au bit près ; générateur idempotent ; `verifier-domaine.js` détecte bien un
   canonical étranger injecté. Outil repris comme critère du lot 8.
+- 2026-08-19 — **Lot 3 tenté par Codex, bloqué côté GitHub Pages.** Le `.git` vide a été
+  remplacé par un dépôt Git valide, le distant `https://github.com/Gaslandie/eccotaepf.git`
+  était vide avant intervention, le dépôt a été passé en privé, puis le commit initial
+  `c6cb3b0` a été poussé sur `main` sans force. Activation Pages demandée sur `main` à la
+  racine, refusée par GitHub : `Your current plan does not support GitHub Pages for this
+  repository.` Vérifications locales OK : domaine unique, liens internes, 15 pages avec
+  `noindex`, `robots.txt` en `Disallow: /`. Vérifications en ligne non passantes :
+  `https://gaslandie.github.io/eccotaepf/` renvoie `Site not found`.

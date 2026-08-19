@@ -53,6 +53,7 @@
 | 2026-08-19 | Lot 0B : en-tête avec téléphone et pied de page à quatre colonnes figés pour toute la phase statique | Éviter les divergences lors de leur recopie sur les pages du lot 1 et de leur extraction au lot 4 | Les blocs `header`, menu mobile et `footer` de `index.html` et `404.html` sont identiques au caractère près |
 | 2026-08-19 | Lot 1 : six slugs de réalisation figés et pages statiques générées depuis une source de données locale | Aligner les fiches sur le futur modèle PHP et garantir la répétabilité des blocs partagés | `scripts/generer-pages-lot1.js` produit les pages publiques et normalise les chemins des pages imbriquées |
 | 2026-08-19 | Lot 2 : métadonnées SEO provisoires sur l'URL GitHub Pages de recette | Le domaine définitif n'est pas encore arrêté et les contenus réels arrivent au lot 2B | Canonical, Open Graph, Twitter Card, JSON-LD, `robots.txt` et `sitemap.xml` devront être alignés au domaine final avant le lot 8 |
+| 2026-08-19 | Publication de recette bloquée si le dépôt GitHub reste privé avec le plan actuel | GitHub refuse l'activation de Pages sur ce dépôt privé : `Your current plan does not support GitHub Pages for this repository.` | Décision nécessaire avant de clore le lot 3 : plan GitHub compatible, recette temporairement publique en `noindex`, ou hébergement alternatif |
 
 ## Non-objectifs
 
