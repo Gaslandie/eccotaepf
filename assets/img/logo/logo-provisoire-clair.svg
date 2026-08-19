@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-labelledby="title desc">
+  <title id="title">Logotype ECCOTA-EPF</title>
+  <desc id="desc">Logotype typographique sombre sur fond clair.</desc>
+  <rect width="360" height="96" fill="#f6f1e8"/>
+  <text x="24" y="58" fill="#16262f" font-family="Arial Black, Arial, sans-serif" font-size="43" font-weight="900" letter-spacing="0">ECCOTA</text>
+  <text x="238" y="53" fill="#16262f" font-family="Arial, sans-serif" font-size="19" font-weight="800" letter-spacing="0">EPF</text>
+  <path d="M24 76h252" stroke="#b86e2b" stroke-width="4"/>
+</svg>

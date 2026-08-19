@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+Sitemap: https://gaslandie.github.io/eccotaepf/sitemap.xml
