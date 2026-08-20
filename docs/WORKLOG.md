@@ -172,3 +172,8 @@
   premium : fond légèrement travaillé, ombre plus fine, états de liens plus lisibles,
   téléphone encadré, CTA renforcé et menu mobile harmonisé. Captures locales vérifiées en
   390 px et 1440 px.
+- 2026-08-20 — **Enrichissement des visuels institutionnels.** Le bandeau À propos affiche
+  désormais l'image d'équipe déjà sourcée, sans répétition dans le contenu. Les sept cartes
+  Domaines de l'accueil reçoivent chacune le visuel WebP correspondant à leur métier, avec
+  `srcset`, texte alternatif et suivi provisoire. Contrôle réel : 22 pages testées à 320,
+  768, 1024 et 1440 px sans débordement ni image cassée.

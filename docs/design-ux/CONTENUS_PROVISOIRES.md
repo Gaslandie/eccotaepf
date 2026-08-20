@@ -40,17 +40,17 @@ Source : `docs/cadrage/DONNEES_CLIENT.md`, extrait du document « ECCOTA-EPF au 
 | `assets/img/theme/realisations-batiment-livre-*.webp` | Réalisations | Bâtiment achevé à Accra | Photo d'un ouvrage livré par ECCOTA-EPF | À remplacer |
 | `assets/img/theme/partenaires-reunion-plans-*.webp` | Partenaires | Équipe d'ingénieurs réunie autour de plans | Photo de réunion ou de suivi ECCOTA-EPF | À remplacer |
 | `assets/img/theme/contact-conakry-*.webp` | Contact | Littoral urbain et bâtiments de Conakry | Photo institutionnelle du siège ou de Conakry | À remplacer |
-| `assets/img/realisations/demo-genie-civil-*.webp` | Services | Travaux de génie civil | Photo réelle du domaine | À remplacer |
-| `assets/img/realisations/demo-batiment-public-*.webp` | Services | Travaux sur bâtiment | Photo réelle du domaine | À remplacer |
-| `assets/img/realisations/renovation-batiment-*.webp` | Services | Rénovation de bâtiment | Photo réelle du domaine | À remplacer |
-| `assets/img/realisations/travaux-voirie-*.webp` | Services | Voirie et circulation | Photo réelle du domaine | À remplacer |
-| `assets/img/realisations/base-logistique-*.webp` | Services | Base logistique et matériaux | Photo réelle du domaine | À remplacer |
-| `assets/img/realisations/amenagement-agropastoral-*.webp` | Services | Parcelle agricole irriguée | Photo réelle du domaine | À remplacer |
+| `assets/img/realisations/demo-genie-civil-*.webp` | Accueil et Services | Travaux de génie civil | Photo réelle du domaine | À remplacer |
+| `assets/img/realisations/demo-batiment-public-*.webp` | Accueil et Services | Travaux sur bâtiment | Photo réelle du domaine | À remplacer |
+| `assets/img/realisations/renovation-batiment-*.webp` | Accueil et Services | Rénovation de bâtiment | Photo réelle du domaine | À remplacer |
+| `assets/img/realisations/travaux-voirie-*.webp` | Accueil et Services | Voirie et circulation | Photo réelle du domaine | À remplacer |
+| `assets/img/realisations/base-logistique-*.webp` | Accueil et Services | Base logistique et matériaux | Photo réelle du domaine | À remplacer |
+| `assets/img/realisations/amenagement-agropastoral-*.webp` | Accueil et Services | Parcelle agricole irriguée | Photo réelle du domaine | À remplacer |
 | `assets/img/realisations/logement-personnel-centre-sante-bangouya-*.webp` | Fiche Bangouya | Logement rural en maçonnerie | Photo réelle du marché | À remplacer |
 | `assets/img/realisations/ecole-primaire-gberedou-baranama-*.webp` | Fiche école primaire Gbérédou Baranama | École primaire rurale | Photo réelle du marché | À remplacer |
 | `assets/img/realisations/installations-electriques-filamadina-conakry-*.webp` | Fiche Filamadina | Installation électrique | Photo réelle du marché | À remplacer |
 | `assets/img/realisations/transport-travailleurs-mines-mandiana-*.webp` | Fiche transport Mandiana | Transport sur piste minière | Photo réelle du marché | À remplacer |
-| `assets/img/realisations/maison-residentielle-gomboyah-*.webp` | Services et fiche Gomboyah | Bâtiment résidentiel en construction | Photo réelle du domaine et du marché | À remplacer |
+| `assets/img/realisations/maison-residentielle-gomboyah-*.webp` | Accueil, Services et fiche Gomboyah | Bâtiment résidentiel en construction | Photo réelle du domaine et du marché | À remplacer |
 | `assets/img/realisations/renovation-facade-hopital-donka-*.webp` | Fiche Hôpital National Donka | Rénovation de façade | Photo réelle du marché | À remplacer |
 | `assets/img/realisations/maintenance-batiment-cmc-matam-*.webp` | Fiche CMC de Matam | Maintenance et menuiserie | Photo réelle du marché | À remplacer |
 | `assets/img/realisations/hangar-marche-gbessoba-*.webp` | Fiche hangar de Gbèssoba | Charpente métallique | Photo réelle du marché | À remplacer |

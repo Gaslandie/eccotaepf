@@ -525,9 +525,38 @@ a.direct-contact-item:focus {
 .service-tile {
   display: flex;
   flex-direction: column;
-  gap: .75rem;
   height: 100%;
-  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.service-tile-media {
+  aspect-ratio: 16 / 10;
+  background: #16262f;
+  overflow: hidden;
+}
+
+.service-tile-media picture,
+.service-tile-media img {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.service-tile-media img {
+  object-fit: cover;
+  transition: transform var(--duree-moyenne) var(--sortie);
+}
+
+.service-tile:is(:hover, :focus-within) .service-tile-media img {
+  transform: scale(1.04);
+}
+
+.service-tile-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 0 1.25rem 1.25rem;
 }
 
 .service-icon,
@@ -539,12 +568,15 @@ a.direct-contact-item:focus {
 .service-icon {
   align-items: center;
   background: #1f3a44;
+  border: 4px solid #fffaf1;
   color: #f6f1e8;
   display: inline-flex;
-  height: 46px;
+  height: 54px;
   justify-content: center;
-  margin-bottom: 1rem;
-  width: 46px;
+  margin-top: -27px;
+  position: relative;
+  width: 54px;
+  z-index: 1;
 }
 
 .project-card {
