@@ -130,24 +130,26 @@ button:focus-visible,
 }
 
 .site-header {
-  background: rgba(246, 241, 232, .96);
-  border-bottom: 1px solid rgba(22, 38, 47, .12);
-  backdrop-filter: blur(10px);
-  transition: transform var(--duree-courte) var(--sortie);
+  background: linear-gradient(180deg, rgba(255, 250, 241, .98), rgba(246, 241, 232, .94));
+  border-bottom: 1px solid rgba(22, 38, 47, .1);
+  backdrop-filter: saturate(140%) blur(14px);
+  box-shadow: 0 10px 30px rgba(22, 38, 47, .07);
+  transition: background var(--duree-courte) var(--sortie), box-shadow var(--duree-courte) var(--sortie), transform var(--duree-courte) var(--sortie);
 }
 
-body.header-compact .site-header { background: #fffaf1; box-shadow: 0 8px 24px rgba(22, 38, 47, .12); }
+body.header-compact .site-header { background: rgba(255, 250, 241, .98); box-shadow: 0 14px 32px rgba(22, 38, 47, .14); }
 body.header-compact .navbar { --bs-navbar-padding-y: .35rem; }
 body.header-compact .site-logo { width: 150px; }
 body.header-hidden .site-header { transform: translateY(-105%); }
 
 .site-logo {
+  filter: drop-shadow(0 4px 10px rgba(22, 38, 47, .08));
   width: 170px;
   height: auto;
 }
 
 .navbar {
-  --bs-navbar-padding-y: .65rem;
+  --bs-navbar-padding-y: .55rem;
   --bs-navbar-color: #223238;
   --bs-navbar-hover-color: #8f571f;
   --bs-navbar-active-color: #16262f;
@@ -158,11 +160,20 @@ body.header-hidden .site-header { transform: translateY(-105%); }
   align-items: center;
   background: #16262f;
   border: 0;
+  border-radius: .25rem;
+  box-shadow: 0 10px 20px rgba(22, 38, 47, .14);
   color: #f6f1e8;
   display: inline-flex;
   height: 44px;
   justify-content: center;
+  transition: background var(--duree-courte) var(--sortie), transform var(--duree-courte) var(--sortie);
   width: 44px;
+}
+
+.navbar-toggler:hover,
+.navbar-toggler:focus {
+  background: #1f3a44;
+  transform: translateY(-1px);
 }
 
 .navbar-toggler-icon-custom,
@@ -194,30 +205,68 @@ body.header-hidden .site-header { transform: translateY(-105%); }
 }
 
 .nav-link {
-  border-bottom: 3px solid transparent;
+  border-radius: .18rem;
   font-weight: 700;
-  padding-inline: .75rem;
+  padding: .55rem .75rem;
+  position: relative;
+  transition: background var(--duree-courte) var(--sortie), color var(--duree-courte) var(--sortie);
+}
+
+.nav-link::after {
+  background: #c9823a;
+  bottom: .24rem;
+  content: "";
+  height: 2px;
+  left: .75rem;
+  position: absolute;
+  right: .75rem;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duree-courte) var(--sortie);
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  background: rgba(242, 228, 209, .7);
+}
+
+.nav-link:hover::after,
+.nav-link:focus::after,
+.nav-link[aria-current="page"]::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
 }
 
 .nav-link[aria-current="page"],
 .nav-link.is-active {
-  background: rgba(201, 130, 58, .13);
-  border-bottom-color: #c9823a;
-  color: #8f571f;
+  background: #f2e4d1;
+  color: #713f15;
 }
 
 .header-phone {
+  background: rgba(255, 250, 241, .72);
+  border: 1px solid rgba(22, 38, 47, .14);
+  border-radius: .18rem;
   color: #16262f;
   font-family: "Figtree", Arial, sans-serif;
   font-size: .9rem;
   font-weight: 700;
+  padding: .55rem .72rem;
   text-decoration: none;
   white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(255, 250, 241, .55);
+  transition: border-color var(--duree-courte) var(--sortie), color var(--duree-courte) var(--sortie), transform var(--duree-courte) var(--sortie);
 }
 
 .header-phone:hover,
 .header-phone:focus {
+  border-color: rgba(201, 130, 58, .55);
   color: #8f571f;
+  transform: translateY(-1px);
+}
+
+.site-header .btn-primary {
+  box-shadow: 0 12px 22px rgba(143, 87, 31, .18);
 }
 
 .btn {
@@ -258,6 +307,10 @@ body.header-hidden .site-header { transform: translateY(-105%); }
   color: #f6f1e8;
   font-size: 1.15rem;
   padding: .8rem .75rem;
+}
+
+.offcanvas .nav-link::after {
+  display: none;
 }
 
 .offcanvas .nav-link[aria-current="page"],
@@ -470,6 +523,9 @@ a.direct-contact-item:focus {
 }
 
 .service-tile {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
   height: 100%;
   padding: 1.25rem;
 }
@@ -555,6 +611,33 @@ a.direct-contact-item:focus {
   color: #c9823a;
   content: "·";
   margin-right: .35rem;
+}
+
+.card-link {
+  align-items: center;
+  color: #8f571f;
+  display: inline-flex;
+  font-family: "Figtree", Arial, sans-serif;
+  font-size: .92rem;
+  font-weight: 700;
+  gap: .35rem;
+  margin-top: auto;
+  text-decoration-thickness: 2px;
+}
+
+.card-link::after {
+  content: "→";
+  line-height: 1;
+  transition: transform var(--duree-courte) var(--sortie);
+}
+
+.card-link:hover,
+.card-link:focus {
+  color: #713f15;
+}
+
+:is(.project-card,.service-tile):is(:hover,:focus-within) .card-link::after {
+  transform: translateX(3px);
 }
 
 .project-key-figure {
@@ -982,29 +1065,30 @@ a.direct-contact-item:focus {
 .section-index {
   background: #fffaf1;
   border-bottom: 1px solid rgba(22, 38, 47, .13);
-  position: sticky;
-  top: 68px;
-  z-index: 1000;
 }
 
 .section-index .container {
-  display: flex;
-  gap: .35rem 1.2rem;
-  overflow-x: auto;
-  padding-block: .85rem;
-  scrollbar-width: thin;
+  display: grid;
+  gap: .6rem;
+  grid-template-columns: 1fr;
+  padding-block: 1rem;
 }
 
 .section-index a {
+  background: #f6f1e8;
+  border: 1px solid #d7cec0;
   color: #16262f;
-  flex: 0 0 auto;
+  display: block;
   font-size: .9rem;
   font-weight: 700;
+  min-height: 44px;
+  padding: .65rem .8rem;
   text-decoration: none;
 }
 
 .section-index a:hover,
 .section-index a:focus {
+  background: #f2e4d1;
   color: #8f571f;
 }
 
@@ -1491,6 +1575,10 @@ textarea.form-control {
     width: 188px;
   }
 
+  .section-index .container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .partner-band {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1585,6 +1673,10 @@ textarea.form-control {
 @media (min-width: 1200px) {
   .site-logo {
     width: 188px;
+  }
+
+  .section-index .container {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .navbar .nav-link {

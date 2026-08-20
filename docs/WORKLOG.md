@@ -165,3 +165,10 @@
   320/768/1024/1440 px sans débordement, parcours sans JavaScript et mouvement réduit OK,
   CLS 0. Lighthouse mobile gzip accueil : 98/100/100/69 ; le SEO reste limité par le
   `noindex` obligatoire de la maquette.
+- 2026-08-19 — **Ajustement UX des cartes.** Les cartes Domaines et Réalisations affichent
+  désormais un CTA visible, avec résumés de réalisations raccourcis pour faciliter le scan
+  sans modifier les fiches détaillées.
+- 2026-08-20 — **Finition de la navigation.** La barre principale reçoit un traitement plus
+  premium : fond légèrement travaillé, ombre plus fine, états de liens plus lisibles,
+  téléphone encadré, CTA renforcé et menu mobile harmonisé. Captures locales vérifiées en
+  390 px et 1440 px.

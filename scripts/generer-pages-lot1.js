@@ -589,17 +589,20 @@ function renderExistingWithShared(file) {
 function projectCard(project, heading = "h2", basePrefix = "../") {
   const base = `${basePrefix}assets/img/${project.image}`;
   const keys = project.domainKeys.join(" ");
+  const href = `${project.slug}.html`;
+  const summary = projectCardSummaries.get(project.slug) || project.summary;
   return `<div class="col-md-6 col-xl-4" data-project-card data-domaine="${keys}">
           <article class="project-card">
             <div class="image-frame">
-              <a href="${project.slug}.html" aria-label="Voir ${project.title.toLowerCase()}">
+              <a href="${href}" aria-label="Voir ${project.title.toLowerCase()}">
                 ${picture(base, project.alt, "(min-width: 1200px) 33vw, (min-width: 768px) 50vw, 100vw")}
               </a>
             </div>
             <div class="project-body">
               <p class="project-meta" aria-label="Domaine, localisation et année"><span>${project.domain}</span><span>${project.city}</span><span>${project.year}</span></p>
-              <${heading} class="h5"><a href="${project.slug}.html">${project.shortTitle}</a></${heading}>
-              <p class="mb-0">${project.summary}</p>
+              <${heading} class="h5"><a href="${href}">${project.shortTitle}</a></${heading}>
+              <p class="mb-0">${summary}</p>
+              <a class="card-link" href="${href}">Voir le projet</a>
             </div>
           </article>
         </div>`;
@@ -620,6 +623,22 @@ function galleryButton(item, index) {
           <span>${item[2]}</span>
         </button>`;
 }
+
+const projectCardSummaries = new Map([
+  ["construction-logement-personnel-centre-sante-bangouya", "Logement de fonction rural avec magasin et bloc de latrines."],
+  ["construction-ecole-primaire-gberedou-baranama", "École primaire de 3 salles, bureau, magasin et blocs de latrines."],
+  ["fourniture-ventilateurs-installations-electriques-filamadina-conakry", "Ventilateurs et installations électriques dans 23 salles de classe."],
+  ["transport-travailleurs-site-mines-mandiana", "Transport de travailleurs vers le site des Mines de Mandiana."],
+  ["construction-batiment-piece-modele-gomboyah", "Bâtiment de pièce modèle réalisé pour JOBOMAX Guinée Sarl."],
+  ["renovation-batiments-hopital-national-donka-conakry", "Rénovation et entretien de bâtiments hospitaliers à Conakry."],
+  ["entretien-reparations-centre-medico-communal-matam-conakry", "Entretien, réparations matérielles et mobilières au CMC de Matam."],
+  ["construction-hangar-marche-gbessoba", "Hangar de marché avec bloc de latrines de 4 cabines."],
+  ["construction-equipement-ecole-primaire-siriya-sinko", "École primaire équipée, forage et clôture semi-grillagée de 400 ml."],
+  ["rehabilitation-infrastructures-irrigation-ndouta-tougue", "Irrigation réhabilitée sur 50 ha avec magasin et aires de séchage."],
+  ["construction-latrines-ecole-centre-sante-gberedou-baranama", "Blocs sanitaires pour école primaire et centre de santé."],
+  ["construction-siege-projet-action-faim-mandiana", "Bloc administratif, magasin et abri pour groupe électrogène."],
+  ["construction-ouvrages-beton-arme-route-kindia-telimele", "Ouvrages en béton armé sur la route Kindia-Télimélé."],
+]);
 
 const featuredProjects = [projects[1], projects[9], projects[12], projects[5], projects[3], projects[8]];
 
@@ -666,7 +685,7 @@ const indexMain = `<main id="contenu">
     <section class="section" id="domaines">
       <div class="container">
         <div class="row g-4 align-items-end mb-4"><div class="col-lg-7"><p class="eyebrow">Domaines d'intervention</p><h2>Un socle BTP, élargi aux besoins concrets des projets.</h2></div><div class="col-lg-5"><p class="mb-0">Transport et construction d'ouvrages de génie civil et rural, ouvrages de franchissement, projets d'aménagements, construction de bâtiments, rénovations, équipement d'infrastructures sanitaires et scolaires, fournitures diverses.</p></div></div>
-        <div class="row g-3 g-lg-4">${services.map((service, index) => `<div class="col-md-6 col-xl-3"><article class="service-tile"><span class="service-icon" aria-hidden="true">${domainIcons[index]}</span><h3 class="h5">${service[1]}</h3><p class="mb-0">${service[4]}</p></article></div>`).join("")}</div>
+        <div class="row g-3 g-lg-4">${services.map((service, index) => `<div class="col-md-6 col-xl-3"><article class="service-tile"><span class="service-icon" aria-hidden="true">${domainIcons[index]}</span><h3 class="h5">${service[1]}</h3><p class="mb-0">${service[4]}</p><a class="card-link" href="services.html#${service[0]}">Voir le domaine</a></article></div>`).join("")}</div>
       </div>
     </section>
 
